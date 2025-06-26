@@ -1,5 +1,5 @@
 {
-  "name": "宠物视频混剪工作流 v1",
+  "name": "宠物视频混剪工作流 v1（变量版）",
   "description": "自动混剪30秒宠物视频并生成剪映草稿，包含文案、语音、字幕和背景音乐。",
   "nodes": [
     {
@@ -7,7 +7,7 @@
       "type": "input",
       "label": "读取本地素材",
       "config": {
-        "path": "/mnt/videos/pets/",
+        "path": "{{video_folder}}",
         "random_pick": true,
         "max_files": 6
       }
@@ -36,7 +36,7 @@
       "type": "video_concat",
       "label": "concat_videos",
       "config": {
-        "max_total_duration": 30
+        "max_total_duration": "{{max_video_duration}}"
       }
     },
     {
@@ -51,7 +51,7 @@
       "type": "speech_synthesis",
       "label": "搞笑语音",
       "config": {
-        "voice_id": "7426720361733160969"
+        "voice_id": "{{voice_id}}"
       }
     },
     {
@@ -70,7 +70,8 @@
       "label": "搞笑背景音乐",
       "config": {
         "volume": 35,
-        "random": true
+        "random": true,
+        "audio_url": "{{bgm_url}}"
       }
     },
     {
@@ -99,9 +100,14 @@
     {
       "id": "保存草稿",
       "type": "save_draft",
-      "label": "保存草稿"
+      "label": "保存草稿",
+      "outputs": {
+        "draft_url": "{{draft_url}}",
+        "account_id": "{{account_id}}"
+      }
     }
   ],
-  "version": "1.0",
-  "created_at": "2025-06-26T06:42:43.641541Z"
+  "version": "1.1",
+  "created_at": "2025-06-26T06:42:43.641541Z",
+  "updated_at": "2025-06-26T07:38:26.245242Z"
 }

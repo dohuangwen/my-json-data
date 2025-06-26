@@ -1,0 +1,107 @@
+{
+  "name": "宠物视频混剪工作流 v1",
+  "description": "自动混剪30秒宠物视频并生成剪映草稿，包含文案、语音、字幕和背景音乐。",
+  "nodes": [
+    {
+      "id": "素材导入",
+      "type": "input",
+      "label": "读取本地素材",
+      "config": {
+        "path": "/mnt/videos/pets/",
+        "random_pick": true,
+        "max_files": 6
+      }
+    },
+    {
+      "id": "内容审核",
+      "type": "filter",
+      "label": "黑屏+违规审核",
+      "config": {
+        "method": "ffmpeg-opencv",
+        "filter_blackframe": true,
+        "filter_audio": true
+      }
+    },
+    {
+      "id": "视频切割",
+      "type": "video_cut",
+      "label": "cut_video",
+      "config": {
+        "min_duration": 3,
+        "max_duration": 6
+      }
+    },
+    {
+      "id": "视频拼接",
+      "type": "video_concat",
+      "label": "concat_videos",
+      "config": {
+        "max_total_duration": 30
+      }
+    },
+    {
+      "id": "搞笑文案生成",
+      "type": "llm",
+      "label": "搞笑脚本",
+      "model": "deepseek-v3",
+      "prompt": "你是一个宠物短视频旁白写手，风格轻松搞笑。\n要求：\n- 每句不超过15字\n- 输出8~10句\n- 格式为数组"
+    },
+    {
+      "id": "语音合成",
+      "type": "speech_synthesis",
+      "label": "搞笑语音",
+      "config": {
+        "voice_id": "7426720361733160969"
+      }
+    },
+    {
+      "id": "获取时间线",
+      "type": "audio_timelines",
+      "label": "时间戳处理"
+    },
+    {
+      "id": "字幕生成",
+      "type": "caption_infos",
+      "label": "字幕"
+    },
+    {
+      "id": "添加BGM",
+      "type": "add_audio",
+      "label": "搞笑背景音乐",
+      "config": {
+        "volume": 35,
+        "random": true
+      }
+    },
+    {
+      "id": "创建剪映草稿",
+      "type": "create_draft",
+      "label": "草稿初始化",
+      "config": {
+        "resolution": "1080x1920"
+      }
+    },
+    {
+      "id": "插入视频",
+      "type": "add_videos",
+      "label": "加入混剪片段"
+    },
+    {
+      "id": "插入语音",
+      "type": "add_audio",
+      "label": "加入旁白"
+    },
+    {
+      "id": "插入字幕",
+      "type": "add_captions",
+      "label": "加入字幕"
+    },
+    {
+      "id": "保存草稿",
+      "type": "save_draft",
+      "label": "保存草稿"
+    }
+  ],
+  "version": "1.0",
+  "created_at": "2025-06-26T06:42:43.641541Z"
+}
